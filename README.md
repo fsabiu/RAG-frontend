@@ -11,8 +11,8 @@ This is the frontend application for the RAG system, built with ReactJS.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/frontend.git
-   cd frontend
+   git clone https://github.com/fsabiu/RAG-frontend.git
+   cd RAG-frontend
    ```
 
 2. Install dependencies:

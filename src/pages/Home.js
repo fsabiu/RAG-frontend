@@ -1,10 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import "../styles/Home.css"; // Optional: Add styles for the Home component
 
 function Home() {
   return (
-    <main>
+    <main className="home-container">
       <h2>Welcome to the RAG Application</h2>
-      <p>This is the home page.</p>
+      <p>Select a page to navigate:</p>
+      <div className="links">
+        <Link to="/form" className="link-button">Go to Form Page</Link>
+        <Link to="/chat" className="link-button">Go to Chat Page</Link>
+      </div>
     </main>
   );
 }
