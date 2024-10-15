@@ -100,7 +100,7 @@ function ChatPage() {
 
   return (
     <div className="container">
-      <img src="https://www.idika.gr/wp-content/uploads/2024/06/idika-logo-header.png" alt="IDIKA Logo" className="idika-logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle Logo" className="oracle-logo" />
       <div className="right-rail">
         <div id="chatBox">
           {messages.map((msg, index) => (
