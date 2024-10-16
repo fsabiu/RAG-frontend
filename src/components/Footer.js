@@ -1,9 +1,12 @@
 import React from "react";
+import "../styles/Footer.css";
 
 function Footer() {
   return (
-    <footer>
-      <p>&copy; 2023 RAG Application</p>
+    <footer className="app-footer">
+      <div className="footer-content">
+        <p>&copy; 2024 Oracle</p>
+      </div>
     </footer>
   );
 }

@@ -1,0 +1,52 @@
+.config-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #312d2a;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #B7B5B3;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submit-button {
+  background-color: #69615c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  align-self: flex-start;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #7d746e;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  border: 1px solid #B7B5B3;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.form-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #312d2a;
+}
