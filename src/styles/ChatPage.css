@@ -16,15 +16,14 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  max-width: 800px; /* Reduced max-width to accommodate smaller sidebar */
+  max-width: 1100px; /* Increased max-width to accommodate wider sidebar */
   width: 100%;
   margin: 20px auto;
   padding: 20px;
   background-color: rgba(252, 251, 250, 0.9);
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid transparent;
-  border-image: url('../../public/images/rightRailTopBorder.png') 4 stretch;
+  border: 1px solid #ddd; /* Border around the container */
   height: calc(100vh - 100px);
 }
 
@@ -36,8 +35,8 @@ body {
 }
 
 .rag-config-tab {
-  width: 300px; /* Adjust the width as needed */
-  border-left: 1px solid #ddd;
+  width: 300px; /* Adjusted width as needed */
+  border: 1px solid #ddd; /* Changed from border-left to full border */
   background-color: #f9f9f9;
   overflow-y: auto;
 }
@@ -48,9 +47,9 @@ body {
 }
 
 .sidebar {
-  width: 250px; /* Further reduced width for a slimmer sidebar */
+  width: 450px; /* Increased width to match the sidebar */
   background-color: #f9f9f9;
-  border-right: 1px solid #ddd;
+  border: 1px solid #ddd; /* Border on all sides */
   overflow-y: auto;
 }
 
@@ -154,8 +153,7 @@ body {
 
   .sidebar {
     width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd; /* Ensure border is consistent in mobile view */
     height: 200px; /* Adjust as needed */
   }
 

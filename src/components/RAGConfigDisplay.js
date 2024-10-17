@@ -48,6 +48,29 @@ function RAGConfigDisplay() {
     return key;
   };
 
+  const shouldDisplayField = (section, key) => {
+    if (!metadata || !metadata.config || !configData) return true;
+
+    const sectionConfig = metadata.config[section];
+    if (!sectionConfig) return true;
+
+    // Always display top-level fields
+    if (sectionConfig[key]) return true;
+
+    // Check if this is a nested field
+    for (const [topKey, topOptions] of Object.entries(sectionConfig)) {
+      if (topOptions.dependencies) {
+        const topValue = configData[section][topKey];
+        const dependentFields = topOptions.dependencies[topValue];
+        if (Array.isArray(dependentFields) && dependentFields.includes(key)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   if (error) {
     return <div className="rag-config-error">{error}</div>;
   }
@@ -62,18 +85,24 @@ function RAGConfigDisplay() {
       {Object.entries(configData).map(([section, fields]) => (
         <div key={section} className="config-section">
           <h3>{getLabel(section)}</h3>
-          {fields && typeof fields === 'object' && Object.entries(fields).map(([key, value]) => (
-            <div key={key} className="config-field">
-              <span className="field-label">{getLabel(section, key)}:</span>
-              <span className="field-value">
-                {value !== null && value !== undefined
-                  ? typeof value === 'object'
-                    ? JSON.stringify(value)
-                    : value.toString()
-                  : 'N/A'}
-              </span>
-            </div>
-          ))}
+          {Object.entries(fields).map(([key, value]) => {
+            if (!shouldDisplayField(section, key)) {
+              return null;
+            }
+
+            return (
+              <div key={key} className="config-field">
+                <span className="field-label">{getLabel(section, key)}:</span>
+                <span className="field-value">
+                  {value !== null && value !== undefined
+                    ? typeof value === 'object'
+                      ? JSON.stringify(value)
+                      : value.toString()
+                    : 'N/A'}
+                </span>
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
