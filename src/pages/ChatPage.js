@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/ChatPage.css'; // Ensure this path is correct
+import '../styles/ChatPage.css';
+import RAGConfigDisplay from '../components/RAGConfigDisplay';
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -99,28 +100,35 @@ function ChatPage() {
   };
 
   return (
-    <div className="container">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle Logo" className="oracle-logo" />
-      <div className="right-rail">
-        <div id="chatBox">
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.type}-message`}>
-              {msg.content}
+    <div className="chat-page-container">
+      <aside className="sidebar">
+        <RAGConfigDisplay />
+      </aside>
+      <div className="chat-interface">
+        <div className="container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle Logo" className="oracle-logo" />
+          <div className="right-rail">
+            <div id="chatBox">
+              {messages.map((msg, index) => (
+                <div key={index} className={`message ${msg.type}-message`}>
+                  {msg.content}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="input-area">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="Send a message..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          />
-          <button id="sendButton" onClick={sendMessage}>
-            <i className="fas fa-paper-plane"></i>
-          </button>
+            <div className="input-area">
+              <input
+                type="text"
+                id="userInput"
+                placeholder="Send a message..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              />
+              <button id="sendButton" onClick={sendMessage}>
+                <i className="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

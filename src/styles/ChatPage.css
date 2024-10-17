@@ -16,7 +16,7 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 800px; /* Reduced max-width to accommodate smaller sidebar */
   width: 100%;
   margin: 20px auto;
   padding: 20px;
@@ -35,6 +35,31 @@ body {
   height: 100%;
 }
 
+.rag-config-tab {
+  width: 300px; /* Adjust the width as needed */
+  border-left: 1px solid #ddd;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+}
+
+.chat-page-container {
+  display: flex;
+  height: calc(100vh - 60px); /* Adjust based on header/footer height */
+}
+
+.sidebar {
+  width: 250px; /* Further reduced width for a slimmer sidebar */
+  background-color: #f9f9f9;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+.chat-interface {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 #chatBox {
   flex-grow: 1;
   border: 1px solid #B7B5B3;
@@ -50,10 +75,11 @@ body {
 
 .message {
   max-width: 70%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 8px; /* Reduced padding for messages */
+  margin-bottom: 8px; /* Reduced margin for messages */
   border-radius: 18px;
   word-wrap: break-word;
+  font-size: 14px; /* Reduced font size for messages */
 }
 
 .user-message {
@@ -65,7 +91,7 @@ body {
 .system-message {
   align-self: flex-start;
   background-color: #F7F5F4;
-  color: #161513;
+  color: #555555; /* Changed to grey for better contrast */
   border: 1px solid #B7B5B3;
 }
 
@@ -74,7 +100,7 @@ body {
   margin-top: auto;
   margin-bottom: 20px;
   position: relative;
-  max-width: 800px;
+  max-width: 700px; /* Reduced max-width for input */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -84,11 +110,11 @@ body {
 
 #userInput {
   flex-grow: 1;
-  padding: 15px;
-  padding-right: 50px;
+  padding: 10px; /* Reduced padding for input */
+  padding-right: 40px; /* Adjusted padding for send button */
   border: 1px solid #B7B5B3;
   border-radius: 24px;
-  font-size: 16px;
+  font-size: 14px; /* Reduced font size for input */
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -106,7 +132,7 @@ body {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 16px; /* Reduced font size for send button */
   color: #312d2a;
   transition: color 0.3s;
 }
@@ -116,8 +142,28 @@ body {
 }
 
 .oracle-logo {
-  max-width: 200px;
-  margin: 0 auto 20px;
+  max-width: 150px; /* Reduced logo size */
+  margin: 0 auto 15px; /* Adjusted margin */
   display: block;
 }
 
+@media (max-width: 768px) {
+  .chat-page-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    height: 200px; /* Adjust as needed */
+  }
+
+  .chat-interface {
+    flex: 1;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+}
