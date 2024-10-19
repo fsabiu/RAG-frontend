@@ -1,0 +1,27 @@
+
+> rag-frontend@1.0.0 start
+> react-scripts start
+
+(node:1434888) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:1434888) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view rag-frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.0.0.24:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+assets by path static/ 2.46 MiB
+  asset static/js/bundle.js 2.11 MiB [emitted] (name: main) 1 related asset
+  asset static/media/background.dfa6f0fedc47e05094c2.png 354 KiB [emitted] [immutable] [from: public/images/background.png] (auxiliary name: main)
+  asset static/js/node_modules_web-vitals_dist_web-vitals_js.chunk.js 7.23 KiB [emitted] 1 related asset
+asset asset-manifest.json 546 bytes [emitted]
+asset index.html 396 bytes [emitted]
+cached modules 1.89 MiB (javascript) 354 KiB (asset) 32.8 KiB (runtime) [cached] 155 modules
+webpack 5.95.0 compiled successfully in 1444 ms

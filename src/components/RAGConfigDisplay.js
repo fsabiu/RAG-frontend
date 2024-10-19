@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/RAGConfigDisplay.css';
 import { fetchData } from '../utils/api';
+import { API_ENDPOINTS } from '../config/apiConfig';
 
 function RAGConfigDisplay() {
   const [configData, setConfigData] = useState(null);
@@ -10,7 +11,7 @@ function RAGConfigDisplay() {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const data = await fetchData('http://84.235.246.54:8000/rag_config');
+        const data = await fetchData(API_ENDPOINTS.RAG_CONFIG);
         console.log('Fetched RAG Config:', data); // Detailed logging
         setConfigData(data);
       } catch (error) {
@@ -21,7 +22,7 @@ function RAGConfigDisplay() {
 
     const fetchMetadata = async () => {
       try {
-        const data = await fetchData('http://84.235.246.54:8000/setup_rag_template');
+        const data = await fetchData(API_ENDPOINTS.SETUP_RAG_TEMPLATE);
         console.log('Fetched RAG Template:', data); // Detailed logging
         // Ensure metadata is correctly extracted
         setMetadata(data.metadata);

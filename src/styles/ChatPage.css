@@ -74,11 +74,11 @@ body {
 
 .message {
   max-width: 70%;
-  padding: 8px; /* Reduced padding for messages */
-  margin-bottom: 8px; /* Reduced margin for messages */
+  padding: 8px;
+  margin-bottom: 8px;
   border-radius: 18px;
   word-wrap: break-word;
-  font-size: 14px; /* Reduced font size for messages */
+  font-size: 14px;
 }
 
 .user-message {
@@ -90,7 +90,7 @@ body {
 .system-message {
   align-self: flex-start;
   background-color: #F7F5F4;
-  color: #555555; /* Changed to grey for better contrast */
+  color: #555555;
   border: 1px solid #B7B5B3;
 }
 

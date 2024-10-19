@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ChatPage.css';
 import RAGConfigDisplay from '../components/RAGConfigDisplay';
+import { API_ENDPOINTS } from '../config/apiConfig';
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -20,14 +21,14 @@ function ChatPage() {
   };
 
   const fetchResponse = async (message) => {
-    const url = 'http://84.235.246.54:5050/ask';
+    const url = API_ENDPOINTS.ASK;
     const data = {
       message: message,
       genModel: 'OCI_CommandRplus',
       conversation: []
     };
 
-    setMessages((prevMessages) => [...prevMessages, { type: 'system', content: 'Assistant: ' }]);
+    setMessages((prevMessages) => [...prevMessages, { type: 'system', content: '' }]);
 
     try {
       const response = await fetch(url, {
@@ -87,7 +88,7 @@ function ChatPage() {
   };
 
   const callCleanEndpoint = async () => {
-    const url = 'http://84.235.246.54:5050/clean_conversation';
+    const url = API_ENDPOINTS.CLEAN_CONVERSATION;
     try {
       const response = await fetch(url, { method: 'POST' });
       if (!response.ok) {

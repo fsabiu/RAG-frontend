@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/ConfigForm.css';
+import { API_ENDPOINTS } from '../config/apiConfig';
 
 function ConfigForm({ metadata, template }) {
   const [formData, setFormData] = useState(template);
@@ -21,7 +22,7 @@ function ConfigForm({ metadata, template }) {
     console.log('Submitted configuration:', JSON.stringify(formData, null, 2));
 
     // Send the request to the specified endpoint
-    fetch('http://84.235.246.54:8000/setup_rag', {
+    fetch(API_ENDPOINTS.SETUP_RAG, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
