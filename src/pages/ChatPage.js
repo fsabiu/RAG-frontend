@@ -1,20 +1,162 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/ChatPage.css';
 import RAGConfigDisplay from '../components/RAGConfigDisplay';
 import { API_ENDPOINTS } from '../config/apiConfig';
+import { marked } from 'marked';
+import { createParser } from 'eventsource-parser';
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [configData, setConfigData] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const [error, setError] = useState(null);
+  const chatBoxRef = useRef(null);
+  const dataFetchedRef = useRef(false);
+  
+  // Queue to hold incoming tokens
+  const tokenQueueRef = useRef([]);
+  // Flag to indicate if processing is ongoing
+  const isProcessingRef = useRef(false);
+  // Minimum delay between tokens in milliseconds
+  const MIN_DELAY = 15; // Adjust as needed
 
   useEffect(() => {
-    callCleanEndpoint();
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+
+    const fetchAllData = async () => {
+      try {
+        const [config, template] = await Promise.all([
+          fetchData(API_ENDPOINTS.RAG_CONFIG),
+          fetchData(API_ENDPOINTS.SETUP_RAG_TEMPLATE)
+        ]);
+
+        console.log('Fetched RAG Config:', config);
+        console.log('Fetched RAG Template:', template);
+
+        setConfigData(config);
+        setMetadata(template.metadata);
+
+        await fetchInitialResponse();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch data.');
+      }
+    };
+
+    fetchAllData();
   }, []);
+
+  const fetchData = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  };
+
+  const fetchInitialResponse = async () => {
+    const url = API_ENDPOINTS.INIT;
+    const data = {
+      message: "how are you?",
+      genModel: "OCI_CommandRplus"
+    };
+
+    console.log(`${new Date().toISOString()} - Sending initial request to:`, url);
+
+    setMessages([{ type: 'system', content: '' }]);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      await handleStreamResponse(response);
+    } catch (error) {
+      console.error(`${new Date().toISOString()} - Fetch error:`, error);
+      updateLastMessage('Error: Failed to get initial response from the server.');
+    }
+  };
+
+  const handleStreamResponse = async (response) => {
+    const parser = createParser(onParse);
+
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = new TextDecoder().decode(value);
+        console.log(`${new Date().toISOString()} - Received chunk:`, chunk);
+        parser.feed(chunk);
+      }
+    } catch (error) {
+      console.error(`${new Date().toISOString()} - Error reading stream:`, error);
+      updateLastMessage(prevContent => prevContent + '\nError: Failed to read the response stream.');
+    }
+  };
+
+  const onParse = (event) => {
+    if (event.type === 'event') {
+      try {
+        const data = JSON.parse(event.data);
+        console.log(`${new Date().toISOString()} - Parsed event:`, data);
+
+        if (data.type === 'content') {
+          tokenQueueRef.current.push(data.content);
+          processQueue();
+        } else if (data.type === 'done') {
+          console.log(`${new Date().toISOString()} - Response completed`);
+        }
+      } catch (error) {
+        console.error(`${new Date().toISOString()} - Error parsing JSON:`, error);
+      }
+    }
+  };
+
+  const processQueue = useCallback(() => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
+
+    const processNext = () => {
+      if (tokenQueueRef.current.length === 0) {
+        isProcessingRef.current = false;
+        return;
+      }
+
+      const nextToken = tokenQueueRef.current.shift();
+      updateLastMessage(prevContent => prevContent + nextToken);
+      console.log(`${new Date().toISOString()} - Appended content:`, nextToken);
+
+      setTimeout(processNext, MIN_DELAY);
+    };
+
+    processNext();
+  }, []);
+
+  const updateLastMessage = (updateFunction) => {
+    setMessages(prevMessages => {
+      const newMessages = [...prevMessages];
+      const lastMessage = newMessages[newMessages.length - 1];
+      if (lastMessage && lastMessage.type === 'system') {
+        lastMessage.content = typeof updateFunction === 'function' ? updateFunction(lastMessage.content) : updateFunction;
+      } else {
+        // If there's no system message, add one
+        newMessages.push({ type: 'system', content: typeof updateFunction === 'function' ? updateFunction('') : updateFunction });
+      }
+      return newMessages;
+    });
+  };
 
   const sendMessage = async () => {
     if (inputValue.trim()) {
       const newMessage = { type: 'user', content: inputValue.trim() };
-      setMessages([...messages, newMessage]);
+      setMessages(prevMessages => [...prevMessages, newMessage, { type: 'system', content: '' }]);
       setInputValue('');
       await fetchResponse(newMessage.content);
     }
@@ -28,7 +170,7 @@ function ChatPage() {
       conversation: []
     };
 
-    setMessages((prevMessages) => [...prevMessages, { type: 'system', content: '' }]);
+    console.log(`${new Date().toISOString()} - Sending request to:`, url);
 
     try {
       const response = await fetch(url, {
@@ -39,80 +181,32 @@ function ChatPage() {
         body: JSON.stringify(data)
       });
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      let buffer = '';
-      let botResponse = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex;
-        while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
-          const line = buffer.slice(0, newlineIndex);
-          buffer = buffer.slice(newlineIndex + 1);
-
-          if (line.startsWith('data:')) {
-            const jsonString = line.slice(5).trim();
-
-            try {
-              const jsonData = JSON.parse(jsonString);
-              if (jsonData.type === 'content') {
-                botResponse += jsonData.content;
-                updateLastMessage(botResponse);
-              } else if (jsonData.type === 'done') {
-                console.log('Response completed');
-              }
-            } catch (error) {
-              console.error('Error parsing JSON:', error);
-            }
-          }
-        }
-      }
+      await handleStreamResponse(response);
     } catch (error) {
-      console.error('Fetch error:', error);
+      console.error(`${new Date().toISOString()} - Fetch error:`, error);
       updateLastMessage('Error: Failed to get response from the server.');
     }
   };
 
-  const updateLastMessage = (content) => {
-    setMessages((prevMessages) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[updatedMessages.length - 1].content = content;
-      return updatedMessages;
-    });
-  };
-
-  const callCleanEndpoint = async () => {
-    const url = API_ENDPOINTS.CLEAN_CONVERSATION;
-    try {
-      const response = await fetch(url, { method: 'POST' });
-      if (!response.ok) {
-        throw new Error('Failed to clean conversation');
-      }
-      console.log('Conversation cleaned successfully');
-    } catch (error) {
-      console.error('Error cleaning conversation:', error);
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  };
+  }, [messages]);
 
   return (
     <div className="chat-page-container">
       <aside className="sidebar">
-        <RAGConfigDisplay />
+        <RAGConfigDisplay configData={configData} metadata={metadata} error={error} />
       </aside>
       <div className="chat-interface">
         <div className="container">
           <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle Logo" className="oracle-logo" />
           <div className="right-rail">
-            <div id="chatBox">
+            <div id="chatBox" ref={chatBoxRef}>
               {messages.map((msg, index) => (
                 <div key={index} className={`message ${msg.type}-message`}>
-                  {msg.content}
+                  <div dangerouslySetInnerHTML={{ __html: marked(msg.content) }} />
                 </div>
               ))}
             </div>

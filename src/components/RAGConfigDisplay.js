@@ -1,44 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../styles/RAGConfigDisplay.css';
-import { fetchData } from '../utils/api';
-import { API_ENDPOINTS } from '../config/apiConfig';
 
-function RAGConfigDisplay() {
-  const [configData, setConfigData] = useState(null);
-  const [metadata, setMetadata] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const data = await fetchData(API_ENDPOINTS.RAG_CONFIG);
-        console.log('Fetched RAG Config:', data); // Detailed logging
-        setConfigData(data);
-      } catch (error) {
-        console.error('Error fetching RAG config:', error);
-        setError('Failed to fetch RAG configuration.');
-      }
-    };
-
-    const fetchMetadata = async () => {
-      try {
-        const data = await fetchData(API_ENDPOINTS.SETUP_RAG_TEMPLATE);
-        console.log('Fetched RAG Template:', data); // Detailed logging
-        // Ensure metadata is correctly extracted
-        setMetadata(data.metadata);
-      } catch (error) {
-        console.error('Error fetching RAG template:', error);
-        setError('Failed to fetch RAG metadata.');
-      }
-    };
-
-    fetchConfig();
-    fetchMetadata();
-  }, []);
-
+function RAGConfigDisplay({ configData, metadata, error }) {
   const getLabel = (section, key) => {
     if (metadata && metadata.labels && metadata.labels.EN) {
-      // Try to get the label for section.key, then for the section, then fallback to key
       return (
         metadata.labels.EN[`${section}.${key}`] ||
         metadata.labels.EN[section] ||
