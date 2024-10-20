@@ -25,9 +25,11 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  width: 70%;
-  max-width: 1200px;
-  overflow: hidden; /* Add this line */
+  width: 100%; /* Changed from 70% to 100% */
+  max-width: 900px; /* Match the max-width of the container */
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 
 .container {
@@ -38,7 +40,6 @@ body {
   flex-direction: column;
   background-color: rgba(252, 251, 250, 0.9);
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-top: 4px solid transparent;
   padding: 20px;
   box-sizing: border-box;
