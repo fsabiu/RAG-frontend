@@ -47,6 +47,11 @@ function ConfigForm({ metadata, template }) {
   };
 
   const renderField = (section, key, options) => {
+    // Check if the section and key exist in formData
+    if (!formData[section] || !(key in formData[section])) {
+      return null;
+    }
+
     const value = formData[section][key];
     const inputType = getInputType(value);
 
@@ -76,6 +81,11 @@ function ConfigForm({ metadata, template }) {
   };
 
   const renderDependentFields = (section, key, options) => {
+    // Check if the section and key exist in formData
+    if (!formData[section] || !(key in formData[section])) {
+      return null;
+    }
+
     const currentValue = formData[section][key];
     const dependentFields = options.dependencies && options.dependencies[currentValue];
     if (!dependentFields) return null;
@@ -107,16 +117,22 @@ function ConfigForm({ metadata, template }) {
   return (
     <form onSubmit={handleSubmit} className="config-form">
       {Object.entries(metadata.config).map(([section, fields]) => (
-        <div key={section} className="form-section">
-          <h3>{getLabel(section)}</h3>
-          {Object.entries(fields).map(([key, options]) => (
-            <div key={key} className="form-field">
-              <label htmlFor={`${section}-${key}`}>{getLabel(section, key)}</label>
-              {renderField(section, key, options)}
-              {renderDependentFields(section, key, options)}
-            </div>
-          ))}
-        </div>
+        // Check if the section exists in formData
+        formData[section] && (
+          <div key={section} className="form-section">
+            <h3>{getLabel(section)}</h3>
+            {Object.entries(fields).map(([key, options]) => (
+              // Check if the key exists in formData[section]
+              formData[section][key] !== undefined && (
+                <div key={key} className="form-field">
+                  <label htmlFor={`${section}-${key}`}>{getLabel(section, key)}</label>
+                  {renderField(section, key, options)}
+                  {renderDependentFields(section, key, options)}
+                </div>
+              )
+            ))}
+          </div>
+        )
       ))}
       <button type="submit" className="submit-button">Submit Configuration</button>
     </form>
