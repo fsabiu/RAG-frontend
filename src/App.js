@@ -14,7 +14,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/config" element={<ConfigPage />} />
+            <Route path="/setup" element={<ConfigPage />} />
             <Route path="/chat" element={<ChatPage />} />
           </Routes>
         </main>

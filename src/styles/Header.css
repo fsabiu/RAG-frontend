@@ -1,10 +1,11 @@
 .app-header {
-  background-color: #312d2a;
+  background-color: #2c2a27;
   color: white;
   padding: 0 20px;
-  height: 60px;
+  height: 70px;
   display: flex;
   align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -12,8 +13,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
 }
 
 .logo-text {
@@ -23,36 +29,82 @@
 
 .header-nav {
   display: flex;
+  align-items: center;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
-  margin-left: 30px;
+  margin-left: 40px;
   font-size: 16px;
+  font-weight: 500;
+  position: relative;
   transition: color 0.3s;
+}
+
+.nav-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #C74634;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
 }
 
 .nav-link:hover {
   color: #f0f0f0;
 }
 
+.nav-link:hover::after {
+  width: 100%;
+}
+
 .sign-in-button {
-  background-color: #69615c;
+  background-color: #C74634;
   color: white;
   border: none;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s;
+  font-weight: 500;
 }
 
 .sign-in-button:hover {
-  background-color: #7d746e;
+  background-color: #a53d2b;
 }
 
 .oracle-logo {
-  height: 30px;
+  height: 40px;
   width: auto;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .header-nav {
+    margin-top: 10px;
+  }
+
+  .nav-link {
+    margin-left: 20px;
+    font-size: 14px;
+  }
+
+  .oracle-logo {
+    height: 35px;
+  }
+
+  .sign-in-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
 }
