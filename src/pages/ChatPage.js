@@ -194,36 +194,50 @@ function ChatPage() {
     }
   }, [messages]);
 
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="chat-page-container">
-      <aside className="sidebar">
-        <RAGConfigDisplay configData={configData} metadata={metadata} error={error} />
-      </aside>
       <div className="chat-interface">
         <div className="container">
           <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle Logo" className="oracle-logo" />
-          <div className="right-rail">
-            <div id="chatBox" ref={chatBoxRef}>
-              {messages.map((msg, index) => (
-                <div key={index} className={`message ${msg.type}-message`}>
-                  <div dangerouslySetInnerHTML={{ __html: marked(msg.content) }} />
-                </div>
-              ))}
-            </div>
-            <div className="input-area">
-              <input
-                type="text"
-                id="userInput"
-                placeholder="Send a message..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              />
-              <button id="sendButton" onClick={sendMessage}>
-                <i className="fas fa-paper-plane"></i>
-              </button>
-            </div>
+          <div id="chatBox" ref={chatBoxRef}>
+            {messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.type}-message`}>
+                <div dangerouslySetInnerHTML={{ __html: marked(msg.content) }} />
+              </div>
+            ))}
           </div>
+          <div className="input-area">
+            <input
+              type="text"
+              id="userInput"
+              placeholder="Send a message..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            />
+            <button id="sendButton" onClick={sendMessage}>
+              <i className="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="bottom-section">
+        <aside className="sidebar">
+          <RAGConfigDisplay configData={configData} metadata={metadata} error={error} />
+        </aside>
+        <div className="sources-display">
+          <h3>Sources</h3>
+          {/* Placeholder for sources content */}
         </div>
       </div>
     </div>

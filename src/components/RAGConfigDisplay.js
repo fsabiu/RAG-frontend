@@ -46,31 +46,33 @@ function RAGConfigDisplay({ configData, metadata, error }) {
   }
 
   return (
-    <div className="rag-config-display">
-      <h2>RAG Configuration</h2>
-      {Object.entries(configData).map(([section, fields]) => (
-        <div key={section} className="config-section">
-          <h3>{getLabel(section)}</h3>
-          {Object.entries(fields).map(([key, value]) => {
-            if (!shouldDisplayField(section, key)) {
-              return null;
-            }
+    <div style={{ height: '100%', overflow: 'auto' }}>
+      <div className="rag-config-display">
+        <h2>RAG Configuration</h2>
+        {Object.entries(configData).map(([section, fields]) => (
+          <div key={section} className="config-section">
+            <h3>{getLabel(section)}</h3>
+            {Object.entries(fields).map(([key, value]) => {
+              if (!shouldDisplayField(section, key)) {
+                return null;
+              }
 
-            return (
-              <div key={key} className="config-field">
-                <span className="field-label">{getLabel(section, key)}:</span>
-                <span className="field-value">
-                  {value !== null && value !== undefined
-                    ? typeof value === 'object'
-                      ? JSON.stringify(value)
-                      : value.toString()
-                    : 'N/A'}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      ))}
+              return (
+                <div key={key} className="config-field">
+                  <span className="field-label">{getLabel(section, key)}:</span>
+                  <span className="field-value">
+                    {value !== null && value !== undefined
+                      ? typeof value === 'object'
+                        ? JSON.stringify(value)
+                        : value.toString()
+                      : 'N/A'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

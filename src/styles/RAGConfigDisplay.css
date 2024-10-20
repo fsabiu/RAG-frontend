@@ -1,51 +1,47 @@
 .rag-config-display {
-  padding: 20px; /* Maintain increased padding */
-  background-color: #f9f9f9;
   height: 100%;
   overflow-y: auto;
-  font-size: 13px; /* Reduced overall font size */
-  border: 1px solid #ddd; /* Border on all sides */
-  width: 100%; /* Ensure full width within the sidebar */
-  box-sizing: border-box; /* Include padding and borders in width */
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .rag-config-display h2 {
   margin-top: 0;
   color: #312d2a;
-  text-align: left; /* Title aligned to the left */
+  text-align: left;
   margin-bottom: 15px;
-  font-size: 20px; /* Title font size */
+  font-size: 20px;
 }
 
 .config-section {
-  margin-bottom: 15px; /* Spacing between sections */
+  margin-bottom: 15px;
 }
 
 .config-section h3 {
-  margin-bottom: 8px; /* Spacing below section titles */
+  margin-bottom: 8px;
   color: #69615c;
   border-bottom: 1px solid #ddd;
   padding-bottom: 4px;
-  font-size: 16px; /* Section title font size */
-  font-weight: bold; /* Bold for section titles */
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .config-field {
   display: flex;
   justify-content: space-between;
-  padding: 4px 0; /* Padding for fields */
+  padding: 4px 0;
 }
 
 .field-label {
   color: #161513;
   width: 60%;
-  font-size: 13px; /* Reduced font size */
-  /* Removed font-weight: bold; */
+  font-size: 13px;
 }
 
 .field-value {
-  color: #555; /* Grey color for values */
+  color: #555;
   width: 40%;
   word-wrap: break-word;
-  font-size: 13px; /* Consistent reduced font size */
+  font-size: 13px;
 }
