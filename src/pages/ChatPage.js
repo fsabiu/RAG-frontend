@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/ChatPage.css';
 import RAGConfigDisplay from '../components/RAGConfigDisplay';
+import SourceTabs from '../components/SourceTabs';
 import { API_ENDPOINTS } from '../config/apiConfig';
 import { marked } from 'marked';
 import { createParser } from 'eventsource-parser';
@@ -11,6 +12,7 @@ function ChatPage() {
   const [configData, setConfigData] = useState(null);
   const [metadata, setMetadata] = useState(null);
   const [error, setError] = useState(null);
+  const [sources, setSources] = useState([]);
   const chatBoxRef = useRef(null);
   const dataFetchedRef = useRef(false);
   
@@ -85,7 +87,6 @@ function ChatPage() {
 
   const handleStreamResponse = async (response) => {
     const parser = createParser(onParse);
-
     const reader = response.body.getReader();
     try {
       while (true) {
@@ -111,11 +112,23 @@ function ChatPage() {
           tokenQueueRef.current.push(data.content);
           processQueue();
         } else if (data.type === 'done') {
-          console.log(`${new Date().toISOString()} - Response completed`);
+          console.log(`${new Date().toISOString()} - Received 'done' message:`, data);
+          handleDoneMessage(data);
+        } else {
+          console.log(`${new Date().toISOString()} - Unhandled message type:`, data.type);
         }
       } catch (error) {
         console.error(`${new Date().toISOString()} - Error parsing JSON:`, error);
       }
+    }
+  };
+
+  const handleDoneMessage = (data) => {
+    if (data.sources && Array.isArray(data.sources)) {
+      console.log("Sources received:", data.sources);
+      setSources(data.sources);
+    } else {
+      console.log("No sources received or invalid format");
     }
   };
 
@@ -237,7 +250,8 @@ function ChatPage() {
         </aside>
         <div className="sources-display">
           <h3>Sources</h3>
-          {/* Placeholder for sources content */}
+          {console.log("Rendering SourceTabs with sources:", sources)}
+          <SourceTabs sources={sources} />
         </div>
       </div>
     </div>

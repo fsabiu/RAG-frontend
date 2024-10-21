@@ -201,7 +201,7 @@ body {
 }
 
 .sources-display {
-  flex: 0 0 70%; /* Set width to 70% and don't allow growth or shrinkage */
+  flex: 0 0 70%;
   display: flex;
   flex-direction: column;
   background-color: rgba(252, 251, 250, 0.9);
@@ -211,11 +211,24 @@ body {
   overflow-y: auto;
 }
 
+.sources-display h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.sources-display .source-tabs {
+  flex: 1;
+  overflow-y: auto;
+}
+
 /* Ensure content inside sidebar and sources-display takes full height */
 .sidebar > *, .sources-display > * {
   flex: 1;
   overflow-y: auto;
 }
+
 
 @media (max-width: 768px) {
   .chat-interface,
