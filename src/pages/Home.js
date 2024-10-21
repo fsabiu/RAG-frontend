@@ -8,7 +8,7 @@ function Home() {
       <h2>Welcome to the RAG Application</h2>
       <p>Select a page to navigate:</p>
       <div className="links">
-        <Link to="/config" className="link-button">Go to Config Page</Link>
+        <Link to="/setup" className="link-button">Go to Setup Page</Link>
         <Link to="/chat" className="link-button">Go to Chat Page</Link>
       </div>
     </main>
