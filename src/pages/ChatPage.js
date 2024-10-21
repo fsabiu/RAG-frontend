@@ -19,7 +19,7 @@ function ChatPage() {
   // Flag to indicate if processing is ongoing
   const isProcessingRef = useRef(false);
   // Minimum delay between tokens in milliseconds
-  const MIN_DELAY = 15; // Adjust as needed
+  const MIN_DELAY = 70; // Adjust as needed
 
   useEffect(() => {
     if (dataFetchedRef.current) return;
