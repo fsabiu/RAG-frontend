@@ -211,16 +211,27 @@ body {
   overflow-y: auto;
 }
 
-.sources-display h3 {
-  margin-top: 0;
+.sources-header {
   margin-bottom: 10px;
-  font-size: 18px;
-  line-height: 1.2;
+  height: auto;
 }
 
-.sources-display .source-tabs {
+.sources-header h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+  padding: 5px 0;
+}
+
+.sources-content {
   flex: 1;
   overflow-y: auto;
+  padding: 0; /* Ensure no padding here */
+}
+
+.sources-content .source-tabs {
+  height: 100%;
+  margin-top: 5px; /* Small gap after "Sources" */
 }
 
 /* Ensure content inside sidebar and sources-display takes full height */

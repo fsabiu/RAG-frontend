@@ -19,7 +19,7 @@ const SourceTabs = ({ sources }) => {
             className={`tab-header ${activeTab === index ? 'active' : ''}`}
             onClick={() => setActiveTab(index)}
           >
-            Source {index + 1}
+            Document {index + 1}
           </button>
         ))}
       </div>

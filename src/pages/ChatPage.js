@@ -249,9 +249,12 @@ function ChatPage() {
           <RAGConfigDisplay configData={configData} metadata={metadata} error={error} />
         </aside>
         <div className="sources-display">
-          <h3>Sources</h3>
-          {console.log("Rendering SourceTabs with sources:", sources)}
-          <SourceTabs sources={sources} />
+          <div className="sources-header">
+            <h3>Sources</h3>
+          </div>
+          <div className="sources-content">
+            <SourceTabs sources={sources} />
+          </div>
         </div>
       </div>
     </div>
