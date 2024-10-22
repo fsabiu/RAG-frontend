@@ -208,12 +208,13 @@ body {
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  overflow: hidden; /* Changed from overflow-y: auto */
+  height: 100%; /* Ensure it takes full height of its container */
 }
 
 .sources-header {
+  flex: 0 0 auto; /* Don't grow, don't shrink, size to content */
   margin-bottom: 10px;
-  height: auto;
 }
 
 .sources-header h3 {
@@ -224,17 +225,18 @@ body {
 }
 
 .sources-content {
-  flex: 1;
+  flex: 1 1 auto; 
   overflow-y: auto;
-  padding: 0; /* Ensure no padding here */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.sources-content .source-tabs {
-  height: 100%;
-  margin-top: 5px; /* Small gap after "Sources" */
+.source-tabs {
+  flex: 1; 
+  overflow-y: auto;
 }
 
-/* Ensure content inside sidebar and sources-display takes full height */
 .sidebar > *, .sources-display > * {
   flex: 1;
   overflow-y: auto;

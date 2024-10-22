@@ -25,7 +25,7 @@ const SourceTabs = ({ sources }) => {
       </div>
       <div className="tab-content">
         <h4>ID: {sources[activeTab].id}</h4>
-        <p>Score: {sources[activeTab].score}</p>
+        <p>Distance: {sources[activeTab].distance}</p>
         <h5>Metadata:</h5>
         <pre>{JSON.stringify(sources[activeTab].metadata, null, 2)}</pre>
         <h5>Document:</h5>
