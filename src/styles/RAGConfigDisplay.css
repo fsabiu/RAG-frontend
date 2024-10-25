@@ -35,13 +35,13 @@
 
 .field-label {
   color: #161513;
-  width: 60%;
+  width: 50%;
   font-size: 13px;
 }
 
 .field-value {
   color: #555;
-  width: 40%;
+  width: 50%;
   word-wrap: break-word;
   font-size: 13px;
 }

@@ -47,9 +47,9 @@ body {
 }
 
 .oracle-logo {
-  max-width: 150px;
-  margin: 0 auto 15px;
   display: block;
+  margin: auto;
+  max-width: 150px;
 }
 
 #chatBox {

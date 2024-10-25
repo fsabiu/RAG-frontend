@@ -31,6 +31,10 @@ function RAGConfigDisplay({ configData, metadata, error }) {
         if (Array.isArray(dependentFields) && dependentFields.includes(key)) {
           return true;
         }
+        // Add this check for object-type dependencies
+        if (typeof dependentFields === 'object' && dependentFields[key]) {
+          return true;
+        }
       }
     }
 
