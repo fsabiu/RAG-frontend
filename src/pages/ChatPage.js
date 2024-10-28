@@ -23,6 +23,26 @@ function ChatPage() {
   // Minimum delay between tokens in milliseconds
   const MIN_DELAY = 30; // Adjust as needed
 
+  const cleanConversation = async () => {
+    try {
+      const response = await fetch(API_ENDPOINTS.CLEAN_CONVERSATION, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to clean conversation');
+      }
+      
+      console.log(`${new Date().toISOString()} - Conversation cleaned successfully`);
+    } catch (error) {
+      console.error(`${new Date().toISOString()} - Error cleaning conversation:`, error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
@@ -40,6 +60,8 @@ function ChatPage() {
         setConfigData(config);
         setMetadata(template.metadata);
 
+        // Clean conversation before initializing
+        await cleanConversation();
         await fetchInitialResponse();
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -62,7 +84,8 @@ function ChatPage() {
     const url = API_ENDPOINTS.INIT;
     const data = {
       message: "how are you?",
-      genModel: "OCI_CommandRplus"
+      genModel: "OCI_CommandRplus",
+      conversation: []
     };
 
     console.log(`${new Date().toISOString()} - Sending initial request to:`, url);
@@ -177,13 +200,16 @@ function ChatPage() {
 
   const fetchResponse = async (message) => {
     const url = API_ENDPOINTS.ASK;
+    const conversationHistory = formatConversationHistory(messages);
+    
     const data = {
       message: message,
       genModel: 'OCI_CommandRplus',
-      conversation: []
+      conversation: conversationHistory
     };
 
     console.log(`${new Date().toISOString()} - Sending request to:`, url);
+    console.log('Conversation history:', conversationHistory);
 
     try {
       const response = await fetch(url, {
@@ -199,6 +225,15 @@ function ChatPage() {
       console.error(`${new Date().toISOString()} - Fetch error:`, error);
       updateLastMessage('Error: Failed to get response from the server.');
     }
+  };
+
+  const formatConversationHistory = (messages) => {
+    return messages
+      .filter(msg => msg.content.trim() !== '')
+      .map(msg => ({
+        role: msg.type === 'user' ? 'User' : 'Assistant',
+        content: msg.content
+      }));
   };
 
   useEffect(() => {
